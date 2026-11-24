@@ -55,7 +55,7 @@ Other commands:
 
 By default posts are written to `data/outbox/` (dry run) and you upload them yourself.
 
-To automate it, set `MKT_PUBLISHER=webhook` and `MKT_WEBHOOK_URL=https://hooks.zapier.com/...`. Each approved post is sent as JSON to a Zapier, Make or n8n scenario, which posts it to TikTok, Instagram, YouTube and LinkedIn (directly or through Buffer or Metricool). This takes about an hour to set up. Applying for each platform's own API can take months.
+To automate it, set `MKT_PUBLISHER=webhook` and `MKT_WEBHOOK_URL=https://hooks.zapier.com/...`. Each approved post is sent as JSON to a Zapier, Make or n8n scenario, which posts it to TikTok, Instagram, Facebook and Google Business Profile (directly or through Buffer or Metricool). This takes about an hour to set up. Applying for each platform's own API can take months.
 
 ## Run it on autopilot
 
@@ -71,7 +71,7 @@ On a Mac or Linux server, add these to cron (`crontab -e`):
 | Variable | Default |
 |---|---|
 | `MKT_MODEL` | `claude-opus-5-5` |
-| `MKT_CHANNELS` | `linkedin,instagram,tiktok,youtube` |
+| `MKT_CHANNELS` | `instagram,tiktok,facebook,google` (LinkedIn is not used) |
 | `MKT_POSTS_PER_DAY` | `2` (per channel) |
 | `MKT_DATA_DIR` | `./data` |
 | `MKT_PUBLISHER` / `MKT_WEBHOOK_URL` | `dry-run` / empty |

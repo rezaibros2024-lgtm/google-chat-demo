@@ -3,7 +3,7 @@
 dry-run  - writes the post to data/outbox/ so you can copy-paste or upload it yourself.
 webhook  - POSTs the post as JSON to MKT_WEBHOOK_URL. Point that at a Zapier / Make / n8n
            scenario (or Buffer / Metricool via those tools) that fans out to TikTok,
-           Instagram, YouTube and LinkedIn. This avoids waiting months for each
+           Instagram, Facebook and Google Business Profile. This avoids waiting months for each
            platform's own API approval.
 """
 

@@ -26,9 +26,13 @@ class FakeLLM:
         self.calls.append((schema.__name__, prompt))
         assert "<knowledge" in system  # every agent gets the knowledge base
         if schema is PostBatch:
-            return PostBatch(posts=[PostDraft(
-                channel="LinkedIn", format="text", hook=f"Hook {len(self.calls)}",
-                body="Body", cta="Book a call", visual_brief="none", hashtags=["a", "b", "c", "d"])])
+            return PostBatch(posts=[
+                PostDraft(channel="Instagram", format="short_video", hook=f"Hook {len(self.calls)}",
+                          body="Body", cta="Order direct", visual_brief="cheese pull",
+                          hashtags=["a", "b", "c", "d"]),
+                PostDraft(channel="LinkedIn", format="text", hook="Should be dropped",
+                          body="Body", cta="x", visual_brief="none", hashtags=[]),
+            ])
         if schema is LeadScore:
             return LeadScore(score=150, tier="hot", reason="ready", next_action="call today",
                              draft_email="Subject: hi\n\nHello")
@@ -49,7 +53,7 @@ class FakeLLM:
 @pytest.fixture(autouse=True)
 def tmp_data(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "DATA_DIR", tmp_path)
-    monkeypatch.setattr(config, "CHANNELS", ["linkedin"])
+    monkeypatch.setattr(config, "CHANNELS", ["instagram"])
     db.init_all()
     yield tmp_path
 
@@ -70,7 +74,7 @@ def test_daily_loop_drafts_need_approval_before_publishing(tmp_data):
 
     with db.connect("posts") as conn:
         post = conn.execute("SELECT * FROM posts").fetchone()
-    assert post["channel"] == "linkedin" and post["hashtags"] == "a b c"  # max 3 hashtags
+    assert post["channel"] == "instagram" and post["hashtags"] == "a b c"  # max 3 hashtags
 
     cli.main(["approve", str(post["id"])])
     orch.daily()
@@ -124,3 +128,11 @@ def test_status_dashboard(capsys):
     cli.main(["status", "--today"])
     out = capsys.readouterr().out
     assert "waiting on you" in out and "leads.db" in out
+
+
+def test_linkedin_is_never_used():
+    assert "linkedin" not in [c.lower() for c in config.CHANNELS]
+    orch = Orchestrator(llm=FakeLLM())
+    orch.research.daily_brief()
+    orch.creative.draft_from_brief()
+    assert db.count("posts", "posts", "channel='linkedin'") == 0

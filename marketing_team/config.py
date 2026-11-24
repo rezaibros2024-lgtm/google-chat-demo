@@ -23,7 +23,7 @@ WEBHOOK_URL = os.getenv("MKT_WEBHOOK_URL", "")
 # Channels the Creative team writes for, in priority order.
 CHANNELS = [
     c.strip()
-    for c in os.getenv("MKT_CHANNELS", "linkedin,instagram,tiktok,youtube").split(",")
+    for c in os.getenv("MKT_CHANNELS", "instagram,tiktok,facebook,google").split(",")
     if c.strip()
 ]
 

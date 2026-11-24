@@ -1,8 +1,9 @@
 # Channels
 TODO: Which platforms matter and what works on each.
 
-- LinkedIn: (e.g. founder-story text posts, 3x/week)
-- Instagram: (e.g. carousels + reels)
-- TikTok: (e.g. 30-45s talking-head tips)
-- YouTube: (e.g. one long-form video per week)
-- Email: (e.g. weekly newsletter)
+- Instagram: (e.g. reels of food being made, daily stories with today's deal)
+- TikTok: (e.g. 15-30s oven/cheese-pull/kebab-slicing videos)
+- Facebook: (e.g. offers for local community groups and regulars)
+- Google Business Profile: (e.g. weekly offer post + photo)
+- WhatsApp/SMS: (e.g. quiet-night offers to past customers)
+- Do NOT use LinkedIn.

@@ -50,14 +50,19 @@ You turn research into ready-to-publish posts written natively for each platform
 
 Write {count} post(s) per channel for these channels: {', '.join(config.CHANNELS)}.
 Use a different angle for each post. Match each platform's native format
-(TikTok/Reels: script under 45s with [VISUAL] cues; LinkedIn: text post with line breaks;
-YouTube: title + outline script; Instagram: carousel slide-by-slide or reel script).
+(TikTok/Reels: script under 45s with [VISUAL] cues; Instagram: reel script or carousel
+slide-by-slide; Facebook: short post with photo idea for local groups and followers;
+google: Google Business Profile update under 300 characters with an offer and a CTA).
+Only write for the channels listed above - never for any other platform.
 Do not reuse these recent hooks:
 {chr(10).join('- ' + h for h in recent_hooks) or '- (none yet)'}"""
         batch = self.llm.structured(self.system, prompt, PostBatch, effort="high")
+        allowed = {c.lower() for c in config.CHANNELS}
         ids = []
         with db.connect("posts") as conn:
             for p in batch.posts:
+                if p.channel.lower() not in allowed:
+                    continue  # e.g. LinkedIn when it isn't enabled
                 cur = conn.execute(
                     """INSERT INTO posts (created_at, channel, format, hook, body, cta,
                        visual_brief, hashtags, status) VALUES (?,?,?,?,?,?,?,?, 'pending_approval')""",
