@@ -1,9 +1,11 @@
 # Audience
-TODO: Describe who you sell to.
+(Starting assumptions — the owner should correct these.)
 
-- Ideal customer (role, business type, size, location):
-- Their top 3 problems:
-- What they've already tried that didn't work:
-- Words they use to describe the problem:
-- Where they hang out online:
-- Who is NOT a fit:
+- Local families in Cheltenham and nearby Bayside/Kingston suburbs (Highett, Mentone, Parkdale,
+  Moorabbin, Sandringham, Black Rock) wanting an easy family dinner -> Family Feast, Party Packs.
+- Workers and tradies at lunch, Tue–Thu -> $13.90 Lunch Deal.
+- Late-night and weekend HSP and kebab fans -> Share HSP, Mixed Feast, wraps.
+- Long-time locals who've ordered from the Bernard St shop since 1990 -> reassure them that the
+  pizza they love is still here, plus new kebabs and HSP.
+- Parties, sports clubs, school and office events -> Large Party Pack, catering-sized orders.
+- What they care about: value, generous portions, hot and fast, a friendly local shop.

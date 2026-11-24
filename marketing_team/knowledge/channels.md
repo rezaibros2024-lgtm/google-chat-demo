@@ -1,9 +1,8 @@
 # Channels
-TODO: Which platforms matter and what works on each.
-
-- Instagram: (e.g. reels of food being made, daily stories with today's deal)
-- TikTok: (e.g. 15-30s oven/cheese-pull/kebab-slicing videos)
-- Facebook: (e.g. offers for local community groups and regulars)
-- Google Business Profile: (e.g. weekly offer post + photo)
-- WhatsApp/SMS: (e.g. quiet-night offers to past customers)
+- Instagram: reels of pizzas out of the oven, cheese pulls, doner being sliced, HSP being loaded;
+  stories with today's deal.
+- TikTok: 10–30s food videos; trending sounds only if licensed in-app.
+- Facebook: deals and news for regulars and Cheltenham/Bayside local community groups.
+- google: Google Business Profile post each week with one deal + photo, under 300 characters.
+- WhatsApp/SMS: quiet-night offers to customers who opted in (loyalty card members).
 - Do NOT use LinkedIn.
