@@ -4,9 +4,10 @@ from .distribution import DistributionAgent
 from .email import EmailAgent
 from .leads import LeadsAgent
 from .research import ResearchAgent
-from .search import SearchAgent
+from .offers import OffersAgent
+from .reviews import ReviewsAgent
 
 __all__ = [
     "AnalyticsAgent", "CreativeAgent", "DistributionAgent", "EmailAgent",
-    "LeadsAgent", "ResearchAgent", "SearchAgent",
+    "LeadsAgent", "OffersAgent", "ResearchAgent", "ReviewsAgent",
 ]

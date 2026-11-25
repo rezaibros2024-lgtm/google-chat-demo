@@ -10,7 +10,8 @@ from marketing_team.agents.creative import PostBatch, PostDraft
 from marketing_team.agents.distribution import InboxTriage
 from marketing_team.agents.email import Newsletter
 from marketing_team.agents.leads import LeadScore
-from marketing_team.agents.search import Article
+from marketing_team.agents.offers import OfferMessage, OfferPlan
+from marketing_team.agents.reviews import ReviewReply
 from marketing_team.orchestrator import Orchestrator
 
 
@@ -44,9 +45,16 @@ class FakeLLM:
                             stop_doing=["listicles"], summary="Stories win.")
         if schema is Newsletter:
             return Newsletter(subject_lines=["s1", "s2", "s3"], preview_text="p", body_markdown="hi")
-        if schema is Article:
-            return Article(title="T", slug="t", meta_description="d", target_keyword="k",
-                           body_markdown="body")
+        if schema is OfferPlan:
+            return OfferPlan(messages=[
+                OfferMessage(night="Tuesday", deal_name="Two Mediums",
+                             sms="Juniors Tue: 2 mediums + 1.25L $29.90. Reply STOP to opt out",
+                             whatsapp="Tuesday deal at Juniors!"),
+                OfferMessage(night="Wednesday", deal_name="Share HSP", sms="Juniors Wed: Share HSP $29.90",
+                             whatsapp="Wednesday HSP night"),
+            ])
+        if schema is ReviewReply:
+            return ReviewReply(reply="Thanks! — the Juniors team", needs_owner=False, reason="happy")
         raise AssertionError(schema)
 
 
@@ -95,7 +103,7 @@ def test_weekly_loop_feeds_learnings_back_into_research(tmp_data):
     report = orch.weekly()
     assert not report.errors, report.errors
     assert db.count("posts", "learnings") == 1
-    assert (tmp_data / "drafts" / "t.md").exists()
+    assert db.count("posts", "posts", "channel='sms' AND status='pending_approval'") == 2
 
     orch.research.daily_brief()
     last_research_prompt = [p for kind, p in llm.calls if kind == "research"][-1]
@@ -136,3 +144,25 @@ def test_linkedin_is_never_used():
     orch.research.daily_brief()
     orch.creative.draft_from_brief()
     assert db.count("posts", "posts", "channel='linkedin'") == 0
+
+
+def test_offers_always_carry_opt_out_and_never_use_webhook(tmp_data, monkeypatch):
+    orch = Orchestrator(llm=FakeLLM())
+    ids = orch.offers.plan_week()
+    with db.connect("posts") as conn:
+        rows = conn.execute("SELECT body, cta FROM posts WHERE channel='sms'").fetchall()
+    assert all("Reply STOP to opt out" in r["body"] and "Reply STOP to opt out" in r["cta"] for r in rows)
+
+    monkeypatch.setattr(config, "PUBLISHER", "webhook")
+    monkeypatch.setattr(config, "WEBHOOK_URL", "https://hooks.example.invalid/x")
+    cli.main(["approve", *map(str, ids)])
+    sent = orch.distribution.publish_approved()  # would raise if it hit the webhook
+    assert all(ext.startswith("outbox:") for _, ext in sent)
+
+
+def test_low_star_reviews_always_go_to_owner():
+    orch = Orchestrator(llm=FakeLLM())  # fake model says needs_owner=False
+    orch.reviews.draft("Pat", 2, "Pizza was cold")
+    orch.reviews.draft("Lee", 5, "Best kebab in Cheltenham")
+    assert db.count("posts", "inbox", "needs_human=1") == 1
+    assert db.count("posts", "inbox", "needs_human=0 AND status='drafted'") == 1

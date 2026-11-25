@@ -1,6 +1,6 @@
-# One-Person Marketing Team
+# Juniors Pizza & Kebab — AI Marketing Team
 
-An orchestrator plus 7 specialist AI agent teams running on Claude. It writes and publishes your content, triages comments, scores leads and learns from your results. **Nothing goes out without your approval.**
+An orchestrator plus 8 specialist AI agents running on Claude. It writes and publishes your content, triages comments, scores leads and learns from your results. **Nothing goes out without your approval.**
 
 ```
            Knowledge files (offer · audience · voice · channels · rules · compliance)
@@ -8,12 +8,12 @@ An orchestrator plus 7 specialist AI agent teams running on Claude. It writes an
                                  ┌──────▼───────┐
                                  │ Orchestrator │  marketing run daily | weekly
                                  └──────┬───────┘
-   ┌──────────┬──────────┬─────────────┼────────────┬──────────┬───────────┐
-Research   Creative  Distribution    Email        Leads      Search     Analytics
-(web search) (posts,  (publish,      (newsletter) (score,    (SEO blog  (what worked →
-            scripts)   comments,                  follow-up)  articles)  feeds Research)
-                       escalation)
-   └──────────┴──────────┴─────────────┼────────────┴──────────┴───────────┘
+  ┌─────────┬─────────┬────────────┬──────┼──────┬──────────┬──────────┬───────────┐
+Research Creative Distribution Reviews  Offers   Leads     Email    Analytics
+(trends) (Insta,  (publish,    (Google  (Tue/Wed (catering, (news-  (what worked →
+         TikTok,  comments,    review   SMS &    parties)   letter)  feeds Research)
+         FB, GBP) escalation)  replies) WhatsApp)
+  └─────────┴─────────┴────────────┴──────┼──────┴──────────┴──────────┴───────────┘
                          posts.db · leads.db · sales.db  (SQLite, in ./data)
                                         │
                            YOU: review → approve → publish
@@ -39,14 +39,16 @@ marketing reject 6 --note "too salesy"
 marketing status --today   # the morning dashboard
 ```
 
-Weekly: `marketing run weekly` runs the analytics, writes a newsletter draft and an SEO article. Drafts are saved in `data/drafts/`.
+Weekly: `marketing run weekly` runs the analytics, writes the quiet-night SMS/WhatsApp offers (they wait for your approval) and a newsletter draft in `data/drafts/`. Approved SMS offers always go to `data/outbox/` so you can send them from your own SMS tool to opted-in customers. They never go out through the social media webhook.
 
 Other commands:
 
 | Command | What it does |
 |---|---|
 | `marketing inbox --channel instagram --author @sam --text "..."` | Triage a comment or DM. Draft reply, or 🔴 escalate to you |
-| `marketing lead "Sam Lee" --email sam@x.com --message "..." --score` | Add a lead and score it |
+| `marketing google-review "Sam" --stars 5 --text "..."` | Draft a reply to a Google review. Reviews of 1–3 stars are always flagged for you |
+| `marketing offers` | Write this week's quiet-night offers (`MKT_QUIET_NIGHTS`, default Tuesday,Wednesday) |
+| `marketing lead "Cheltenham FC" --message "Pizza for 30 kids Sat" --score` | Add a catering or party enquiry and score it |
 | `marketing leads` | Ranked lead list with next actions and draft emails |
 | `marketing import-sales payments.csv` | Import a Stripe payments CSV export into sales.db |
 | `marketing metrics 12 --views 4000 --likes 210 --comments 31` | Record how a post did (feeds the analytics loop) |
@@ -72,6 +74,7 @@ On a Mac or Linux server, add these to cron (`crontab -e`):
 |---|---|
 | `MKT_MODEL` | `claude-opus-5-5` |
 | `MKT_CHANNELS` | `instagram,tiktok,facebook,google` (LinkedIn is not used) |
+| `MKT_QUIET_NIGHTS` | `Tuesday,Wednesday` |
 | `MKT_POSTS_PER_DAY` | `2` (per channel) |
 | `MKT_DATA_DIR` | `./data` |
 | `MKT_PUBLISHER` / `MKT_WEBHOOK_URL` | `dry-run` / empty |

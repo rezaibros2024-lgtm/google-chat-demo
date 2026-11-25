@@ -1,5 +1,6 @@
 # Rules (set once, apply forever)
-- Every post must have one clear call to action, normally "Call (03) 9553 4025 to order".
+- Every post must have one clear call to action, normally "Order at juniorspizzakebab.com.au or call (03) 9553 4025".
+- Never send people to DoorDash or other delivery apps in our own posts. Direct orders cost us far less.
 - No more than 3 hashtags (e.g. #Cheltenham #MelbourneEats #HSP).
 - Only use prices, deals and hours from offer.md. Never invent a discount, deal or price.
 - Never invent reviews, customer names or statistics. The only rating to quote is 4.7★ from 115+ Google reviews.

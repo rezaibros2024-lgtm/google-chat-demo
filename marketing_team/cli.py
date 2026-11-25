@@ -102,6 +102,16 @@ def cmd_inbox(args):
             print(f"   ↳ {r['draft_reply']}")
 
 
+def cmd_google_review(args):
+    iid = _orch().reviews.draft(args.author, args.stars, args.text)
+    print(f"review reply #{iid} drafted - see `marketing inbox`")
+
+
+def cmd_offers(_):
+    ids = _orch().offers.plan_week()
+    print(f"{len(ids)} quiet-night offer(s) waiting: run `marketing review`")
+
+
 def cmd_lead(args):
     from .agents import LeadsAgent
     from .llm import LLM
@@ -208,7 +218,13 @@ def main(argv=None):
     s.add_argument("--channel", default="instagram"); s.add_argument("--author", default="unknown")
     s.add_argument("--text", default=""); s.set_defaults(fn=cmd_inbox)
 
-    s = sub.add_parser("lead", help="add a lead")
+    s = sub.add_parser("google-review", help="draft a reply to a Google review")
+    s.add_argument("author"); s.add_argument("--stars", type=int, required=True)
+    s.add_argument("--text", default=""); s.set_defaults(fn=cmd_google_review)
+
+    sub.add_parser("offers", help="write this week's quiet-night SMS/WhatsApp offers").set_defaults(fn=cmd_offers)
+
+    s = sub.add_parser("lead", help="add a catering / party order enquiry")
     s.add_argument("name"); s.add_argument("--email", default=""); s.add_argument("--company", default="")
     s.add_argument("--source", default=""); s.add_argument("--message", default="")
     s.add_argument("--score", action="store_true", help="score it immediately")

@@ -1,7 +1,7 @@
 """The Orchestrator ("Claude Code, the head"): decides which teams run, in what order.
 
 daily : research -> creative drafts (to approval desk) -> score leads -> publish what you approved
-weekly: analytics loop -> newsletter draft -> SEO article from the best post
+weekly: analytics loop -> quiet-night SMS/WhatsApp offers -> newsletter draft
 """
 
 from __future__ import annotations
@@ -34,7 +34,8 @@ class Orchestrator:
         self.distribution = agents.DistributionAgent(self.llm)
         self.leads = agents.LeadsAgent(self.llm)
         self.email = agents.EmailAgent(self.llm)
-        self.search = agents.SearchAgent(self.llm)
+        self.offers = agents.OffersAgent(self.llm)
+        self.reviews = agents.ReviewsAgent(self.llm)
         self.analytics = agents.AnalyticsAgent(self.llm)
 
     def daily(self, focus: str = "") -> RunReport:
@@ -50,8 +51,8 @@ class Orchestrator:
     def weekly(self) -> RunReport:
         r = RunReport()
         self._step(r, "analytics", lambda: "learnings saved for next week's content" if self.analytics.run() else "")
+        self._step(r, "offers", lambda: f"{len(self.offers.plan_week())} quiet-night offer(s) waiting for your approval")
         self._step(r, "newsletter", lambda: f"newsletter draft: {self.email.weekly_newsletter()}")
-        self._step(r, "seo", lambda: f"SEO article draft: {self.search.repurpose_best_post()}")
         return r
 
     @staticmethod

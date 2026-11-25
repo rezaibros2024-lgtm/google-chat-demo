@@ -7,7 +7,7 @@ from typing import Literal
 from pydantic import BaseModel
 
 from .. import db
-from ..publishers import get_publisher
+from ..publishers import DryRunPublisher, get_publisher
 from .base import Agent
 
 
@@ -28,11 +28,15 @@ shows strong buying intent, or when you are not sure.
 
     def publish_approved(self) -> list[tuple[int, str]]:
         publisher = get_publisher()
+        outbox = DryRunPublisher()
         results = []
         with db.connect("posts") as conn:
             rows = conn.execute("SELECT * FROM posts WHERE status = 'approved' ORDER BY id").fetchall()
             for row in rows:
-                external_id = publisher.publish(dict(row))
+                # SMS/WhatsApp offers always go to the outbox: the owner sends them from their
+                # own SMS tool, to opted-in customers only. Never through the social webhook.
+                target = outbox if row["channel"] == "sms" else publisher
+                external_id = target.publish(dict(row))
                 conn.execute(
                     "UPDATE posts SET status='published', published_at=?, external_id=? WHERE id=?",
                     (db.now(), external_id, row["id"]),

@@ -27,5 +27,10 @@ CHANNELS = [
     if c.strip()
 ]
 
+# Slow nights the Offers agent writes SMS/WhatsApp deals for (shop is closed Mondays).
+QUIET_NIGHTS = [
+    n.strip() for n in os.getenv("MKT_QUIET_NIGHTS", "Tuesday,Wednesday").split(",") if n.strip()
+]
+
 # How many post ideas the daily run produces.
 POSTS_PER_DAY = int(os.getenv("MKT_POSTS_PER_DAY", "2"))
