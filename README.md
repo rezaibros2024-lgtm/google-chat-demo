@@ -72,7 +72,7 @@ On a Mac or Linux server, add these to cron (`crontab -e`):
 
 | Variable | Default |
 |---|---|
-| `MKT_MODEL` | `claude-opus-5-5` |
+| `MKT_MODEL` | `claude-sonnet-5-5` (switch to `claude-opus-5-5` for best quality, `claude-haiku-5-5` for cheapest) |
 | `MKT_CHANNELS` | `instagram,tiktok,facebook,google` (LinkedIn is not used) |
 | `MKT_QUIET_NIGHTS` | `Tuesday,Wednesday` |
 | `MKT_POSTS_PER_DAY` | `2` (per channel) |

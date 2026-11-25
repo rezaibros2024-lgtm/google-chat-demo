@@ -13,8 +13,9 @@ DATA_DIR = Path(os.getenv("MKT_DATA_DIR", Path.cwd() / "data"))
 # Your business brain: voice, offer, audience, rules... edit these markdown files.
 KNOWLEDGE_DIR = Path(os.getenv("MKT_KNOWLEDGE_DIR", PACKAGE_DIR / "knowledge"))
 
-# Model used by every agent. Opus 5.5 by default; set MKT_MODEL to change it.
-MODEL = os.getenv("MKT_MODEL", "claude-opus-5-5")
+# Model used by every agent. Sonnet 5.5 by default (half the price of Opus 5.5).
+# Set MKT_MODEL=claude-opus-5-5 for the most polished writing, or claude-haiku-5-5 for the cheapest.
+MODEL = os.getenv("MKT_MODEL", "claude-sonnet-5-5")
 
 # Publishing: "dry-run" (default, logs only) or "webhook" (POST to Zapier/Make/n8n).
 PUBLISHER = os.getenv("MKT_PUBLISHER", "dry-run")
