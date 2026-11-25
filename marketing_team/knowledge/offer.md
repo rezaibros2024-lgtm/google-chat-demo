@@ -3,6 +3,7 @@
 - Business: Juniors Pizza & Kebab, 29 Bernard St, Cheltenham VIC 3192 (Melbourne, Australia)
 - Story: Cheltenham's local pizza shop since 1990, now under new ownership. Doner kebabs, wraps and HSP have joined the menu.
 - Hours: Tue–Sat 11:30am–9:30pm · Sun 11:30am–8:30pm · Mon closed
+- Quiet nights (confirmed by owner): Tuesday and Wednesday. Push deals hardest on these nights.
 - How to order: online at juniorspizzakebab.com.au (tap "Start your order") or call (03) 9553 4025.
   Takeaway, plus delivery via DoorDash.
 - Main CTA: "Order at juniorspizzakebab.com.au or call (03) 9553 4025."
